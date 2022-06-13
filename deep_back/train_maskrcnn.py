@@ -61,7 +61,7 @@ def get_transform(train):
 
 def start_train():
     # train on the GPU or on the CPU, if a GPU is not available
-    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+    device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
 
     # our dataset has two classes only - background and person
     num_classes = 2
@@ -76,11 +76,11 @@ def start_train():
 
     # define training and validation data loaders
     data_loader = torch.utils.data.DataLoader(
-        dataset, batch_size=1, shuffle=True, num_workers=4,
+        dataset, batch_size=4, shuffle=True, num_workers=4,
         collate_fn=utils.collate_fn)
 
     data_loader_test = torch.utils.data.DataLoader(
-        dataset_test, batch_size=1, shuffle=False, num_workers=4,
+        dataset_test, batch_size=4, shuffle=False, num_workers=4,
         collate_fn=utils.collate_fn)
 
     # get the model using our helper function
@@ -99,7 +99,7 @@ def start_train():
                                                    gamma=0.1)
 
     # let's train it for 20 epochs
-    num_epochs = 20
+    num_epochs = 200
 
     for epoch in range(num_epochs):
         # train for one epoch, printing every 10 iterations
